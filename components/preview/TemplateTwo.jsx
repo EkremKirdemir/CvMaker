@@ -253,7 +253,7 @@ const TemplateTwo = ({
     <img 
       src={resumeData.profilePicture} 
       alt="Profile"
-      className="w-24 h-24 rounded-full border-2 border-gray-300 shadow-md object-cover mr-4"
+      className="w-24 h-24 rounded-full border-2 border-gray-300 shadow-md object-contain mr-4"
     />
   )}
   <div className="text-left">

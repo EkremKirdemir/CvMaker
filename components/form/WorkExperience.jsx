@@ -73,7 +73,7 @@ const WorkExperience = () => {
             name="description"
             className="w-full other-input h-32"
             value={workExperience.description}
-            maxLength="250"
+            maxLength="500"
             onChange={(e) => handleWorkExperience(e, index)}
           />
           <div className="flex justify-between items-center">

@@ -70,7 +70,7 @@ const Projects = () => {
             name="description"
             className="w-full other-input h-32"
             value={project.description}
-            maxLength="250"
+            maxLength="700"
             onChange={(e) => handleProjects(e, index)}
           />
           <div className="flex justify-between items-center">
