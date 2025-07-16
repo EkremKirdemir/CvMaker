@@ -36,7 +36,7 @@ const TemplateTwo = ({
     { id: "skills", title: "Technical Skills", content: skillsdata },
     { id: "softskills", title: "Soft Skills", content: skillsdata.find(skill => skill.title === "Soft Skills")?.skills || [] },
     { id: "languages", title: "Languages", content: languagesdata },
-    { id: "certifications", title: "References", content: certificationsdata }
+    // { id: "certifications", title: "References", content: certificationsdata }
   ];
 
   const orderedSections = sectionOrder
@@ -235,8 +235,12 @@ const TemplateTwo = ({
 
   // Function to extract username from URL
   const getUsername = (url) => {
-    return url.split('/').pop();
-  };
+  const cleanUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  if (cleanUrl.includes('linkedin.com/in/')) {
+    return cleanUrl.split('/').pop();
+  }
+  return cleanUrl.split('/').pop();
+};
 
   if (certificationsdata) {
     console.log("Certifications data exists:", certificationsdata);
@@ -284,6 +288,7 @@ const TemplateTwo = ({
             if (icon.name === socialMedia.socialMedia.toLowerCase()) {
               return <span key={iconIndex} className="text-sm">{icon.icon}</span>;
             }
+            return null; // Bu satır eksikti
           })}
           {getUsername(socialMedia.link)}
         </a>
