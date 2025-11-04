@@ -33,10 +33,10 @@ const TemplateTwo = ({
     { id: "education", title: "Education", content: educationdata },
     { id: "projects", title: "Projects", content: projectsdata },
     { id: "experience", title: "Work Experience", content: workExperiencedata },
-    { id: "skills", title: "Technical Skills", content: skillsdata },
-    { id: "softskills", title: "Soft Skills", content: skillsdata.find(skill => skill.title === "Soft Skills")?.skills || [] },
-    { id: "languages", title: "Languages", content: languagesdata },
-    // { id: "certifications", title: "References", content: certificationsdata }
+    //{ id: "skills", title: "Skills", content: skillsdata },
+    // { id: "softskills", title: "Kişisel Beceriler", content: skillsdata.find(skill => skill.title === "Soft Skills")?.skills || [] },
+    // { id: "languages", title: "Languages", content: languagesdata },
+    { id: "certifications", title: "Referanslar", content: certificationsdata }
   ];
 
   const orderedSections = sectionOrder
@@ -48,13 +48,13 @@ const TemplateTwo = ({
       case "certifications":
         return (
           <div>
-            <h2 className="section-title border-b-2 border-gray-300 mb-1">References</h2>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1">Skills</h2>
             <ul className="list-disc pl-4 content">
               {certificationsdata && certificationsdata.map((cert, i) => (
                 <li key={i} className="content">
-                  {cert.name}
+                  <span className="font-bold">{cert.name}</span>
                   {cert.issuer && (
-                    <span className="text-gray-600"> - {cert.issuer}</span>
+                    <span className="text-gray-600"> : {cert.issuer}</span>
                   )}
                 </li>
               ))}
@@ -132,15 +132,33 @@ const TemplateTwo = ({
                               )}
                             </div>
                             <p className="sub-content font-medium text-gray-600">
-                              {new Date(project.startYear).getFullYear()} - {new Date(project.endYear).getFullYear()}
+                              {(() => {
+                                const startDate = new Date(project.startYear);
+                                const endDate = new Date(project.endYear);
+                                const startText = !isNaN(startDate.getTime()) ? startDate.toLocaleDateString('tr-TR', { month: '2-digit', year: 'numeric' }) : '';
+                                const endText = !project.endYear || project.endYear === '' || isNaN(endDate.getTime()) ? 'Present' : endDate.toLocaleDateString('tr-TR', { month: '2-digit', year: 'numeric' });
+                                return startText ? `${startText} - ${endText}` : endText;
+                              })()}
                             </p>
                           </div>
                           <p className="content">{project.description}</p>
                           {project.keyAchievements && (
-                            <ul className="list-disc pl-4 content">
-                              {project.keyAchievements.split('\n').map((achievement, i) => (
-                                <li key={i} className="content">{achievement}</li>
-                              ))}
+                            <ul className="list-disc pl-4">
+                              {project.keyAchievements.split('\n').map((achievement, i) => {
+                                const parts = achievement.split(':');
+                                return (
+                                  <li key={i} className="achievement-item">
+                                    {parts.length > 1 ? (
+                                      <>
+                                        <span className="achievement-label">{parts[0]}:</span>
+                                        {parts.slice(1).join(':')}
+                                      </>
+                                    ) : (
+                                      achievement
+                                    )}
+                                  </li>
+                                );
+                              })}
                             </ul>
                           )}
                         </div>
@@ -176,11 +194,35 @@ const TemplateTwo = ({
                               <span>{work.position}</span>
                             </p>
                             <p className="sub-content font-medium text-gray-600">
-                              {new Date(work.startYear).getFullYear()} - {new Date(work.endYear).getFullYear()}
+                              {(() => {
+                                const startDate = new Date(work.startYear);
+                                const endDate = new Date(work.endYear);
+                                const startText = !isNaN(startDate.getTime()) ? startDate.toLocaleDateString('tr-TR', { month: '2-digit', year: 'numeric' }) : '';
+                                const endText = !work.endYear || work.endYear === '' || isNaN(endDate.getTime()) ? 'Present' : endDate.toLocaleDateString('tr-TR', { month: '2-digit', year: 'numeric' });
+                                return startText ? `${startText} - ${endText}` : endText;
+                              })()}
                             </p>
                           </div>
                           <p className="content">{work.description}</p>
-                          <p className="content">{work.keyAchievements}</p>
+                          {work.keyAchievements && (
+                            <ul className="list-disc pl-4">
+                              {work.keyAchievements.split('\n').map((achievement, i) => {
+                                const parts = achievement.split(':');
+                                return (
+                                  <li key={i} className="achievement-item">
+                                    {parts.length > 1 ? (
+                                      <>
+                                        <span className="achievement-label">{parts[0]}:</span>
+                                        {parts.slice(1).join(':')}
+                                      </>
+                                    ) : (
+                                      achievement
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          )}
                         </div>
                       )}
                     </Draggable>
@@ -194,7 +236,7 @@ const TemplateTwo = ({
       case "skills":
         return (
           <div>
-            <h2 className="section-title border-b-2 border-gray-300 mb-1">Technical Skills</h2>
+            <h2 className="section-title border-b-2 border-gray-300 mb-1">Skills</h2>
             <p className="content">
               {skillsdata.find(skill => skill.title === "Technical Skills")?.skills.join(", ")}
             </p>
@@ -235,12 +277,12 @@ const TemplateTwo = ({
 
   // Function to extract username from URL
   const getUsername = (url) => {
-  const cleanUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-  if (cleanUrl.includes('linkedin.com/in/')) {
+    const cleanUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    if (cleanUrl.includes('linkedin.com/in/')) {
+      return cleanUrl.split('/').pop();
+    }
     return cleanUrl.split('/').pop();
-  }
-  return cleanUrl.split('/').pop();
-};
+  };
 
   if (certificationsdata) {
     console.log("Certifications data exists:", certificationsdata);
@@ -252,50 +294,50 @@ const TemplateTwo = ({
     <div className="w-full h-full bg-white p-4">
 
       {/* Header Section */}
-<div className="flex items-center mb-4 justify-start">
-  {resumeData.profilePicture && (
-    <img 
-      src={resumeData.profilePicture} 
-      alt="Profile"
-      className="w-24 h-24 rounded-full border-2 border-gray-300 shadow-md object-contain mr-4"
-    />
-  )}
-  <div className="text-left">
-    <h1 className="name">{namedata}</h1>
-    <p className="profession">{positiondata}</p>
-    <ContactInfo
-      mainclass="flex flex-row gap-1 contact"
-      linkclass="inline-flex items-center gap-1"
-      teldata={contactdata}
-      emaildata={emaildata}
-      addressdata={addressdata}
-      telicon={telicon}
-      emailicon={emailicon}
-      addressicon={addressicon}
-    />
-    <div className="flex items-center gap-2 mt-1 text-sm">
-      {resumeData.socialMedia.map((socialMedia, index) => (
-        <a
-          href={`http://${socialMedia.link}`}
-          aria-label={socialMedia.socialMedia}
-          key={index}
-          title={socialMedia.socialMedia}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-[2px] text-blue-600 hover:text-blue-800 transition-colors"
-        >
-          {icons.map((icon, iconIndex) => {
-            if (icon.name === socialMedia.socialMedia.toLowerCase()) {
-              return <span key={iconIndex} className="text-sm">{icon.icon}</span>;
-            }
-            return null; // Bu satır eksikti
-          })}
-          {getUsername(socialMedia.link)}
-        </a>
-      ))}
-    </div>
-  </div>
-</div>
+      <div className="flex items-center mb-4 justify-start">
+        {resumeData.profilePicture && (
+          <img
+            src={resumeData.profilePicture}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-2 border-gray-300 shadow-md object-contain  mr-4"
+          />
+        )}
+        <div className="text-left">
+          <h1 className="name">{namedata}</h1>
+          <p className="profession">{positiondata}</p>
+          <ContactInfo
+            mainclass="flex flex-row gap-1 contact"
+            linkclass="inline-flex items-center gap-1"
+            teldata={contactdata}
+            emaildata={emaildata}
+            addressdata={addressdata}
+            telicon={telicon}
+            emailicon={emailicon}
+            addressicon={addressicon}
+          />
+          <div className="flex items-center gap-2 mt-1 text-sm">
+            {resumeData.socialMedia.map((socialMedia, index) => (
+              <a
+                href={`http://${socialMedia.link}`}
+                aria-label={socialMedia.socialMedia}
+                key={index}
+                title={socialMedia.socialMedia}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-[2px] text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                {icons.map((icon, iconIndex) => {
+                  if (icon.name === socialMedia.socialMedia.toLowerCase()) {
+                    return <span key={iconIndex} className="text-sm">{icon.icon}</span>;
+                  }
+                  return null; // Bu satır eksikti
+                })}
+                {getUsername(socialMedia.link)}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
 
 
       {/* Draggable Sections */}

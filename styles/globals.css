@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-    
+
     body {
         @apply font-[sans-serif];
     }
@@ -21,98 +21,110 @@
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        @apply bg-zinc-600; 
+        @apply bg-zinc-600;
     }
 
-    textarea, input:focus {
+    textarea,
+    input:focus {
         @apply focus:outline-none;
     }
 
-    .ul-padding{
+    .ul-padding {
         padding-inline-start: 0.9rem;
     }
 
-    .ul-padding-none{
+    .ul-padding-none {
         padding-inline-start: 0;
     }
 }
 
-@layer components{
-    .pi{
+@layer components {
+    .pi {
         @apply p-2 mb-2 text-white bg-zinc-800/70 backdrop-blur-sm rounded text-[0.9rem] border border-white/10;
     }
 
-    .profileInput{
+    .profileInput {
         @apply pi file:border-0 file:bg-zinc-800 file:text-white file:rounded-sm;
     }
 
-    .flex-col-gap-2{
+    .flex-col-gap-2 {
         @apply flex flex-col gap-2;
     }
 
-    .flex-wrap-gap-2{
+    .flex-wrap-gap-2 {
         @apply flex flex-wrap gap-2;
     }
 
-    .other-input{
+    .other-input {
         @apply p-2 mb-2 text-white bg-zinc-800/70 backdrop-blur-sm rounded focus:placeholder-transparent border border-white/10;
     }
 
-    .input-title{
+    .input-title {
         @apply text-[1rem] text-white font-semibold;
     }
 
-    .f-col{
+    .f-col {
         @apply flex flex-col;
     }
 
-    .grid-4{
-        @apply grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4;
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
     }
 
-    .editable{
+    .editable {
         @apply hover:bg-gray-100 hover:cursor-text outline-none;
     }
 
 }
 
-.name{
-    font-size: 18px;
+.name {
+    font-size: 20px;
     font-weight: 700;
 }
 
-.profession{
-    font-size: 14px;
+.profession {
+    font-size: 16px;
     font-weight: 500;
 }
 
-.contact{
-    font-size: 12px;
+.contact {
+    font-size: 13px;
     font-weight: 400;
 }
 
-.social-media{
+.social-media {
     font-size: 10px;
     font-weight: 400;
 }
 
-.section-title{
-    font-size: 12px;
+.section-title {
+    font-size: 15px;
     font-weight: 700;
 }
 
-.content{
-    font-size: 10.5px;
+.content {
+    font-size: 12px;
     font-weight: 400;
 }
 
-.sub-content{
-    font-size: 7px;
+.sub-content {
+    font-size: 11px;
     font-weight: 400;
 }
 
-.i-bold{
+.i-bold {
     font-weight: 700 !important;
+}
+
+.achievement-item {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.achievement-label {
+    font-weight: 700;
 }
 
 @media print {
@@ -133,5 +145,5 @@
         overflow-y: visible !important;
     }
 
-    
+
 }
